@@ -63,22 +63,7 @@ function scene:create( event )
 	scene.view:insert(donuts)
 	scene.view:insert(pontuacaoTxt)
 	playerGroup:insert(player)
-	
-	function backgroundLoop(event)
-		background.x = background.x - scroll
-		background2.x = background2.x - scroll
-		background3.x = background3.x - scroll
 
-	if (background.x + background.contentWidth) < 0 then
-		background:translate(origemx * 3,0)
-	end
-	if (background2.x + background2.contentWidth) < 0 then
-		background2:translate( origemx * 3,0 )
-	end
-	if (background3.x + background3.contentWidth) < 0 then
-		background3:translate( origemx * 3,0 )
-	end
-end
 end
 
 function scene:show( event )
@@ -129,6 +114,22 @@ function removerObjeto(event)
 	display.remove( obj ) 
 --  o retorno garante que seja removido somente o objeto clicado
 	return true
+end
+
+	function backgroundLoop(event)
+		background.x = background.x - scroll
+		background2.x = background2.x - scroll
+		background3.x = background3.x - scroll
+
+	if (background.x + background.contentWidth) < 0 then
+		background:translate(origemx * 3,0)
+	end
+	if (background2.x + background2.contentWidth) < 0 then
+		background2:translate( origemx * 3,0 )
+	end
+	if (background3.x + background3.contentWidth) < 0 then
+		background3:translate( origemx * 3,0 )
+	end
 end
 
 scene:addEventListener( "create", scene )

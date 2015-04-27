@@ -19,6 +19,14 @@ playButton.xScale = 0.1;
 playButton.yScale = 0.1;
 playButton.x = (meiox + 210);
 playButton.y = (meioy + 120);
+
+--BOTÃO About
+
+about = display.newImage("about.png")
+about.xScale = 0.3
+about.yScale = 0.3
+about.x = meiox - 200
+about.y = meioy + 120
 		
 function scene:createScene(event)
 			local scenegroup = self.view;
@@ -32,6 +40,7 @@ function scene:show( event )
 	if (phase == "will") then		
 	elseif (phase == "did") then
 		playButton:addEventListener( "tap", startGame )
+		about:addEventListener("tap", informacoes)
 		mostrarNomeJogo()
 	end
 end
@@ -41,6 +50,7 @@ function scene:hide( event )
     local phase = event.phase
 	if (phase == "will") then
 		playButton:removeEventListener( "tap", startGame )
+		about:removeEventListener("tap", informacoes)
 	end
 end
 
@@ -56,7 +66,17 @@ function startGame( )
 	display.remove(cj);
 	transition.cancel(cj);
 	display.remove(playButton);
+	display.remove(about);
 	composer.gotoScene("game");
+end
+
+function informacoes( )
+	display.remove(background);
+	display.remove(cj);
+	transition.cancel(cj);
+	display.remove(playButton);
+	display.remove(about);
+	composer.gotoScene("about");
 end
 
 scene:addEventListener( "create", scene )
