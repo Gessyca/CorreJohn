@@ -1,0 +1,45 @@
+
+
+
+function scene:create( event )
+    local sceneGroup = self.view
+	criandoComponentes()
+	--Falta add o som
+end
+
+function scene:show( event )
+
+    local sceneGroup = self.view
+    local phase = event.phase
+
+    if ( phase == "did" ) then
+    Runtime:addEventListener("enterFrame", backgroundLoop)
+	donuts:addEventListener("tap",pular)
+	pontuacaoTxt.text = "Pontuação: " .. pontuacao
+    end
+end
+
+function scene:hide( event )
+    local sceneGroup = self.view
+    local phase = event.phase
+
+    if ( phase == "will" ) then
+	donuts:removeEventListener("tap",pular)
+    end
+end
+
+-- remove qualquer objeto através de um evento
+function removerObjeto(event)
+	local obj = event.target
+	display.remove( obj ) 
+--  o retorno garante que seja removido somente o objeto clicado
+	return true
+end
+
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+
+return scene
+
+
