@@ -76,7 +76,7 @@ function informacoes( )
 	transition.cancel(cj);
 	display.remove(playButton);
 	display.remove(about);
-	composer.gotoScene("about");
+	composer.gotoScene("about", { effect = "zoomOutIn"});
 end
 
 scene:addEventListener( "create", scene )

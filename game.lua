@@ -54,6 +54,18 @@ player.x = meiox-190
 player.y = meioy+93
 player:setSequence("direita")
 
+local teto = display.newRect( _W2, -1, _W+100, 1 )
+teto:setFillColor( 0,0,0 )
+physics.addBody( teto, "static" )
+teto.name = "teto"
+
+local piso = display.newRect( _W2, _H, _W+100, 1 )
+piso:setFillColor( 0, 0, 0 )
+physics.addBody( piso, "static" )
+piso.name = "piso"
+
+local pizza
+local tm
 function scene:create( event )
     local sceneGroup = self.view
 	playerGroup = display.newGroup()
@@ -63,6 +75,10 @@ function scene:create( event )
 	scene.view:insert(donuts)
 	scene.view:insert(pontuacaoTxt)
 	playerGroup:insert(player)
+	alimentos = display.newGroup()
+	scene.view:insert(alimentos)
+	scene.view:insert( teto )
+	scene.view:insert( piso )
 
 end
 
@@ -76,6 +92,8 @@ function scene:show( event )
 	aparecerDonuts()
 	Runtime:addEventListener("enterFrame", backgroundLoop)
 	donuts:addEventListener("tap",pular)
+	tm = timer.performWithDelay( 3000,mostrarAlimentos ,0)
+	Runtime:addEventListener("collision", onCollision)
     end
 end
 
@@ -84,13 +102,52 @@ function scene:hide( event )
     local sceneGroup = self.view
     local phase = event.phase
 
-   if ( phase == "did" ) then
+   if ( phase == "will" ) then
+    timer.cancel(tm)
 	donuts:removeEventListener("tap",pular)
+	Runtime:removeEventListener("collision", onCollision)
     end
 end
 
 function scene:destroy( event )
     local sceneGroup = self.view
+end
+
+function mostrarAlimentos(event)
+
+--local options = { width = 70, height = 54, numFrames = 4}
+--local playerSheet = graphics.newImageSheet( "image/blocksheet.png", options )
+--local sequenceData = {
+--  { name = "fly", start = 1, count = 4 , time = 1000, loopCount = 0}-
+--}
+  --local rnd = math.floor(math.random() * 5) + 1
+  --block = display.newSprite(playerSheet, sequenceData) 
+
+	pizza = display.newImage("pizza.png")
+	pizza:scale(.1,.1)
+  pizza.x = _W
+  pizza.y = math.random(100, _H )
+  pizza.name = "pizza"
+  physics.addBody(pizza, "kinematic")
+pizza.isSensor =true  
+  alimentos:insert( pizza )
+
+  transition.to( pizza, {time = 3000, x = -50, y = pizza.y, onComplete = removerAlimento})
+end
+
+function removerAlimento()
+pizza:removeSelf()
+end
+
+ function onCollision(event)
+    if ( event.phase == "began" ) then
+        if(event.object1.name == "pizza" and event.object2.name == "teto") then            
+		  removerObjeto(event) 
+        end
+        if(event.object1.name == "piso" and event.object2.name == "pizza") then            
+			removerObjeto(event) 
+        end
+    end
 end
 
 function aparecerDonuts()
