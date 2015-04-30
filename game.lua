@@ -30,6 +30,23 @@ local pontuacaoTxt = display.newText( "Pontuação: ", 60, 15, "Helvetica", 20)
 pontuacaoTxt:setTextColor ( 255, 0, 0 )
 local pontuacao = 0
 
+-- alimentos
+cereja = display.newImage("comidas/s.png")
+cereja:scale(.05,.05)
+cereja.alpha = 0
+coco = display.newImage("comidas/s2.png")
+coco:scale(.08,.08)
+coco.alpha = 0
+salada = display.newImage("comidas/s3.png")
+salada:scale(.05,.05)
+salada.alpha = 0
+maca = display.newImage("comidas/s4.png")
+maca:scale(.01,.01)
+maca.alpha = 0
+abacaxi = display.newImage("comidas/s5.png")
+abacaxi:scale(.01,.01)
+abacaxi.alpha = 0
+
 -- Adicionando Sprite
 local folha =  { width=80, height=107.3, numFrames=12 }
 local imagem = graphics.newImageSheet("fat.png", folha)
@@ -64,7 +81,7 @@ piso:setFillColor( 0, 0, 0 )
 physics.addBody( piso, "static" )
 piso.name = "piso"
 
-local pizza
+local alimentoSaudavel
 local tm
 function scene:create( event )
     local sceneGroup = self.view
@@ -92,8 +109,8 @@ function scene:show( event )
 	aparecerDonuts()
 	Runtime:addEventListener("enterFrame", backgroundLoop)
 	donuts:addEventListener("tap",pular)
-	tm = timer.performWithDelay( 3000,mostrarAlimentos ,0)
-	Runtime:addEventListener("collision", onCollision)
+	tm = timer.performWithDelay( 3000,mostrarAlimentos ,-1)
+	--Runtime:addEventListener("collision", onCollision)
     end
 end
 
@@ -105,7 +122,7 @@ function scene:hide( event )
    if ( phase == "will" ) then
     timer.cancel(tm)
 	donuts:removeEventListener("tap",pular)
-	Runtime:removeEventListener("collision", onCollision)
+	--Runtime:removeEventListener("collision", onCollision)
     end
 end
 
@@ -115,39 +132,33 @@ end
 
 function mostrarAlimentos(event)
 
---local options = { width = 70, height = 54, numFrames = 4}
---local playerSheet = graphics.newImageSheet( "image/blocksheet.png", options )
---local sequenceData = {
---  { name = "fly", start = 1, count = 4 , time = 1000, loopCount = 0}-
---}
-  --local rnd = math.floor(math.random() * 5) + 1
-  --block = display.newSprite(playerSheet, sequenceData) 
+	alimentoSaudavel = selecionarAlimentoSaudavel()
+	alimentoSaudavel.alpha = 1
+	alimentoSaudavel.x = _W
+	alimentoSaudavel.y = math.random(100, _H )
+	alimentoSaudavel.name = "alimentoSaudavel"
+	physics.addBody(alimentoSaudavel, "kinematic")
+	alimentoSaudavel.isSensor =true  
+	alimentos:insert( alimentoSaudavel )
 
-	pizza = display.newImage("pizza.png")
-	pizza:scale(.1,.1)
-  pizza.x = _W
-  pizza.y = math.random(100, _H )
-  pizza.name = "pizza"
-  physics.addBody(pizza, "kinematic")
-pizza.isSensor =true  
-  alimentos:insert( pizza )
+  transition.to( alimentoSaudavel, {time = 3000, x = -50, y = alimentoSaudavel.y, onComplete = removerAlimento})
 
-  transition.to( pizza, {time = 3000, x = -50, y = pizza.y, onComplete = removerAlimento})
+end
+
+function selecionarAlimentoSaudavel()
+local alimentosSaudaveis = {
+[0] = cereja,
+[1] = coco,
+[2] = salada,
+[3] = maca,
+[4] = abacaxi
+}
+return alimentosSaudaveis[math.random (0, 4)]
 end
 
 function removerAlimento()
-pizza:removeSelf()
-end
-
- function onCollision(event)
-    if ( event.phase == "began" ) then
-        if(event.object1.name == "pizza" and event.object2.name == "teto") then            
-		  removerObjeto(event) 
-        end
-        if(event.object1.name == "piso" and event.object2.name == "pizza") then            
-			removerObjeto(event) 
-        end
-    end
+physics.removeBody( alimentoSaudavel )
+alimentoSaudavel:removeSelf()
 end
 
 function aparecerDonuts()
