@@ -30,23 +30,44 @@ local pontuacaoTxt = display.newText( "Pontuação: ", 60, 15, "Helvetica", 20)
 pontuacaoTxt:setTextColor ( 255, 0, 0 )
 local pontuacao = 0
 
--- alimentos
+-- alimentos saudáveis
 cereja = display.newImage("comidas/s.png")
 cereja:scale(.05,.05)
 cereja.alpha = 0
+physics.addBody(cereja, "kinematic")
 coco = display.newImage("comidas/s2.png")
 coco:scale(.08,.08)
 coco.alpha = 0
+physics.addBody(coco, "kinematic")
 salada = display.newImage("comidas/s3.png")
 salada:scale(.05,.05)
 salada.alpha = 0
+physics.addBody(salada, "kinematic")
 maca = display.newImage("comidas/s4.png")
 maca:scale(.01,.01)
 maca.alpha = 0
+physics.addBody(maca, "kinematic")
 abacaxi = display.newImage("comidas/s5.png")
 abacaxi:scale(.01,.01)
 abacaxi.alpha = 0
+physics.addBody(abacaxi, "kinematic")
 
+cerveja = display.newImage("comidas/m.png")
+cerveja:scale(.15,.15)
+cerveja.alpha = 0
+physics.addBody(cerveja, "kinematic")
+hotDog = display.newImage("comidas/m2.png")
+hotDog:scale(.05,.05)
+hotDog.alpha = 0
+physics.addBody(hotDog, "kinematic")
+sorvete = display.newImage("comidas/m3.png")
+sorvete:scale(.05,.05)
+sorvete.alpha = 0
+physics.addBody(sorvete, "kinematic")
+bolo = display.newImage("comidas/m5.png")
+bolo:scale(.02,.02)
+bolo.alpha = 0
+physics.addBody(bolo, "kinematic")
 -- Adicionando Sprite
 local folha =  { width=80, height=107.3, numFrames=12 }
 local imagem = graphics.newImageSheet("fat.png", folha)
@@ -82,6 +103,7 @@ physics.addBody( piso, "static" )
 piso.name = "piso"
 
 local alimentoSaudavel
+local alimentoGorduroso
 local tm
 function scene:create( event )
     local sceneGroup = self.view
@@ -96,7 +118,15 @@ function scene:create( event )
 	scene.view:insert(alimentos)
 	scene.view:insert( teto )
 	scene.view:insert( piso )
-
+	alimentos:insert( coco )
+	alimentos:insert( cereja )
+	alimentos:insert( salada )
+	alimentos:insert( abacaxi )
+	alimentos:insert( maca )
+	alimentos:insert( cerveja )
+	alimentos:insert( hotDog )
+	alimentos:insert( sorvete )
+	alimentos:insert( bolo )
 end
 
 function scene:show( event )
@@ -109,7 +139,8 @@ function scene:show( event )
 	aparecerDonuts()
 	Runtime:addEventListener("enterFrame", backgroundLoop)
 	donuts:addEventListener("tap",pular)
-	tm = timer.performWithDelay( 3000,mostrarAlimentos ,-1)
+	tm = timer.performWithDelay( 4000,mostrarAlimentosSaudaveis ,0)
+	tm = timer.performWithDelay( 5000,mostrarAlimentosGordurosos ,0)
 	--Runtime:addEventListener("collision", onCollision)
     end
 end
@@ -130,18 +161,27 @@ function scene:destroy( event )
     local sceneGroup = self.view
 end
 
-function mostrarAlimentos(event)
+function mostrarAlimentosGordurosos(event)
+
+	alimentoGorduroso = selecionarAlimentoGorduroso()
+	alimentoGorduroso.alpha = 1
+	alimentoGorduroso.x = _W
+	alimentoGorduroso.y = math.random(100, _H )
+	alimentoGorduroso.name = "alimentoGorduroso"
+	alimentoGorduroso.isSensor = true  
+  transition.to( alimentoGorduroso, {time = 3000, x = -50, y = alimentoGorduroso.y, onComplete = removerAlimentoGorduroso})
+
+end
+
+function mostrarAlimentosSaudaveis(event)
 
 	alimentoSaudavel = selecionarAlimentoSaudavel()
 	alimentoSaudavel.alpha = 1
 	alimentoSaudavel.x = _W
 	alimentoSaudavel.y = math.random(100, _H )
 	alimentoSaudavel.name = "alimentoSaudavel"
-	physics.addBody(alimentoSaudavel, "kinematic")
-	alimentoSaudavel.isSensor =true  
-	alimentos:insert( alimentoSaudavel )
-
-  transition.to( alimentoSaudavel, {time = 3000, x = -50, y = alimentoSaudavel.y, onComplete = removerAlimento})
+	alimentoSaudavel.isSensor = true  
+  transition.to( alimentoSaudavel, {time = 3000, x = -50, y = alimentoSaudavel.y, onComplete = removerAlimentoSaudavel})
 
 end
 
@@ -156,9 +196,24 @@ local alimentosSaudaveis = {
 return alimentosSaudaveis[math.random (0, 4)]
 end
 
-function removerAlimento()
-physics.removeBody( alimentoSaudavel )
-alimentoSaudavel:removeSelf()
+function selecionarAlimentoGorduroso()
+local alimentosGordurosos = {
+[0] = cerveja,
+[1] = hotDog,
+[2] = sorvete,
+[3] = bolo,
+}
+return alimentosGordurosos[math.random (0, 3)]
+end
+
+function removerAlimentoSaudavel()
+alimentoSaudavel.alpha = 0
+--alimentoSaudavel:removeSelf()
+end
+
+function removerAlimentoGorduroso()
+alimentoGorduroso.alpha = 0
+--alimentoSaudavel:removeSelf()
 end
 
 function aparecerDonuts()
