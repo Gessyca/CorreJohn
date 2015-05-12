@@ -3,6 +3,7 @@ local scene = composer.newScene()
 -- Adicionando física ao jogo
 local physics = require("physics")
 physics.start()
+local physicsData = (require "shapedefs").physicsData(1.0)
 -- Componentes do jogo
 local origemx = display.contentWidth
 local origemy = display.contentHeight
@@ -32,46 +33,46 @@ local pontuacao = 0
 
 -- alimentos saudáveis
 cereja = display.newImage("comidas/s.png")
-cereja:scale(.05,.05)
 cereja.alpha = 0
+cereja:scale(.05,.05)
 cereja.name = "saudavel"
-physics.addBody(cereja, "kinematic")
+physics.addBody(cereja, { radius=5, density=1.0, friction=0.3, bounce=0.2 })
 coco = display.newImage("comidas/s2.png")
-coco:scale(.08,.08)
 coco.alpha = 0
+coco:scale(.08,.08)
 coco.name = "saudavel"
-physics.addBody(coco, "kinematic")
+physics.addBody(coco,  { radius=5, density=1.0, friction=0.3, bounce=0.2 })
 salada = display.newImage("comidas/s3.png")
 salada.name = "saudavel"
 salada:scale(.05,.05)
 salada.alpha = 0
-physics.addBody(salada, "kinematic")
+physics.addBody(salada, { radius=5, density=1.0, friction=0.3, bounce=0.2 })
 abacaxi = display.newImage("comidas/s5.png")
 abacaxi.name = "saudavel"
 abacaxi:scale(.01,.01)
 abacaxi.alpha = 0
-physics.addBody(abacaxi, "kinematic")
+physics.addBody(abacaxi, { radius=5, density=1.0, friction=0.3, bounce=0.2 })
 
 cerveja = display.newImage("comidas/m.png")
 cerveja.name = "gorduroso"
-cerveja:scale(.15,.15)
 cerveja.alpha = 0
-physics.addBody(cerveja, "kinematic")
+cerveja:scale(.15,.15)
+physics.addBody(cerveja,{ radius=5, density=1.0, friction=0.3, bounce=0.2 })
 hotDog = display.newImage("comidas/m2.png")
 hotDog.name = "gorduroso"
-hotDog:scale(.05,.05)
 hotDog.alpha = 0
-physics.addBody(hotDog, "kinematic")
+hotDog:scale(.05,.05)
+physics.addBody(hotDog,{ radius=5, density=1.0, friction=0.3, bounce=0.2 })
 sorvete = display.newImage("comidas/m3.png")
 sorvete.name = "gorduroso"
-sorvete:scale(.1,.1)
 sorvete.alpha = 0
-physics.addBody(sorvete, "kinematic")
+sorvete:scale(.1,.1)
+physics.addBody(sorvete,{ radius=10, density=1.0, friction=0.3, bounce=0.2 })
 bolo = display.newImage("comidas/m5.png")
 bolo.name = "gorduroso"
 bolo:scale(.02,.02)
 bolo.alpha = 0
-physics.addBody(bolo, "kinematic")
+physics.addBody(bolo,{ radius=10, density=1, friction=0.3, bounce=.2 })
 -- Adicionando Sprite
 local folha =  { width=80, height=107.3, numFrames=12 }
 local imagem = graphics.newImageSheet("fat.png", folha)
@@ -100,12 +101,12 @@ player:setSequence("direita")
 
 local teto = display.newRect( _W2, -1, _W+100, 1 )
 teto:setFillColor( 0,0,0 )
-physics.addBody( teto, "static" )
+physics.addBody( teto, "static")
 teto.name = "teto"
 
 local piso = display.newRect( _W2, _H, _W+100, 1 )
 piso:setFillColor( 0, 0, 0 )
-physics.addBody( piso, "static" )
+physics.addBody( piso, "static", physicsData:get("fat"))
 piso.name = "piso"
 
 listaAlimentos = {
@@ -184,14 +185,21 @@ function mostrarAlimentos(event)
   transition.to( alimento, {time = 3000, x = -50, y = alimento.y, onComplete = removerAlimento})
 end
 
-local function colisao(event)
-print "entrou no metodo"
+function colisao(event)
 if ( event.phase == "began" ) then
 if(event.object1.name == "saudavel" and event.object2.name == "John") then
 pontuacao = pontuacao + 1
 event.object1.alpha = 0
 end
 if(event.object1.name == "John" and event.object2.name == "saudavel") then
+pontuacao = pontuacao + 1
+event.object2.alpha = 0
+end
+if(event.object1.name == "gorduroso" and event.object2.name == "John") then
+pontuacao = pontuacao + 1
+event.object1.alpha = 0
+end
+if(event.object1.name == "John" and event.object2.name == "gorduroso") then
 pontuacao = pontuacao + 1
 event.object2.alpha = 0
 end
