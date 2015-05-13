@@ -27,9 +27,10 @@ background3.y = meioy
 local donuts = display.newImage("donut.png",meiox+220, meioy+130)
 donuts:scale(.1,.1)
 
-local pontuacaoTxt = display.newText( "Pontuação: ", 60, 15, "Helvetica", 20)
+local pontuacao = 150
+local pontuacaoTxt = display.newText( "Peso atual: "..pontuacao, 60, 15, "Helvetica", 20)
 pontuacaoTxt:setTextColor ( 255, 0, 0 )
-local pontuacao = 0
+local Meta = display.newText( "Meta: 60Kg", 200, 15, "Helvetica", 20)
 
 -- alimentos saudáveis
 cereja = display.newImage("comidas/s.png")
@@ -67,12 +68,12 @@ sorvete = display.newImage("comidas/m3.png")
 sorvete.name = "gorduroso"
 sorvete.alpha = 0
 sorvete:scale(.1,.1)
-physics.addBody(sorvete,{ radius=10, density=1.0, friction=0.3, bounce=0.2 })
+physics.addBody(sorvete,{ radius=5, density=1.0, friction=0.3, bounce=0.2 })
 bolo = display.newImage("comidas/m5.png")
 bolo.name = "gorduroso"
 bolo:scale(.02,.02)
 bolo.alpha = 0
-physics.addBody(bolo,{ radius=10, density=1, friction=0.3, bounce=.2 })
+physics.addBody(bolo,{ radius=5, density=0.1, friction=0.1, bounce=0.2 })
 -- Adicionando Sprite
 local folha =  { width=80, height=107.3, numFrames=12 }
 local imagem = graphics.newImageSheet("fat.png", folha)
@@ -182,31 +183,47 @@ function mostrarAlimentos(event)
 	alimento.x = _W
 	alimento.y = math.random(meioy, meioy+95 )
 	alimento.isSensor = true  
-  transition.to( alimento, {time = 3000, x = -50, y = alimento.y, onComplete = removerAlimento})
+  transition.to( alimento, {time = 3000, rotation = -180, x = -50, y = alimento.y, onComplete = removerAlimento})
 end
 
 function colisao(event)
+
 if ( event.phase == "began" ) then
+
 if(event.object1.name == "saudavel" and event.object2.name == "John") then
-pontuacao = pontuacao + 1
+pontuacao = pontuacao - 0.5
+atualizarPontuacao()
 event.object1.alpha = 0
 end
 if(event.object1.name == "John" and event.object2.name == "saudavel") then
-pontuacao = pontuacao + 1
+pontuacao = pontuacao - 0.5
+atualizarPontuacao()
 event.object2.alpha = 0
 end
 if(event.object1.name == "gorduroso" and event.object2.name == "John") then
-pontuacao = pontuacao + 1
+pontuacao = pontuacao + 0.5
+atualizarPontuacao()
 event.object1.alpha = 0
 end
 if(event.object1.name == "John" and event.object2.name == "gorduroso") then
-pontuacao = pontuacao + 1
+pontuacao = pontuacao + 0.5
+atualizarPontuacao()
 event.object2.alpha = 0
 end
 end
 end
 
+function atualizarPontuacao()
+pontuacaoTxt.text = string.format( "Peso atual: %d", pontuacao)
+end
+
+function compararPontuacaoMeta()
+
+-- Lógica Aqui
+
+end
 function removerAlimento()
+alimento.rotation = -45
 alimento.alpha = 0
 end
 
