@@ -3,7 +3,7 @@ local scene = composer.newScene()
 -- Adicionando física ao jogo
 local physics = require("physics")
 physics.start()
-physics.setDrawMode( "hybrid")
+--physics.setDrawMode( "hybrid")
 
 local physicsData = (require "shapedefs").physicsData(1.0)
 -- Componentes do jogo
@@ -39,43 +39,51 @@ cereja = display.newImage("comidas/s.png")
 cereja.alpha = 0
 cereja:scale(.05,.05)
 cereja.name = "saudavel"
-physics.addBody(cereja, { radius=20, density=1.0, friction=0.3})
+cereja.x = meiox
+physics.addBody(cereja, { radius=20})
 coco = display.newImage("comidas/s2.png")
 coco.alpha = 0
+coco.x = meiox
 coco:scale(.08,.08)
 coco.name = "saudavel"
-physics.addBody(coco,  { radius=20, density=1.0, friction=0.3})
+physics.addBody(coco,  { radius=20})
 salada = display.newImage("comidas/s3.png")
 salada.name = "saudavel"
 salada:scale(.05,.05)
+salada.x = meiox
 salada.alpha = 0
-physics.addBody(salada, { radius=20, density=1.0, friction=0.3})
+physics.addBody(salada, { radius=20})
 abacaxi = display.newImage("comidas/s5.png")
 abacaxi.name = "saudavel"
+abacaxi.x = meiox
 abacaxi:scale(.01,.01)
 abacaxi.alpha = 0
-physics.addBody(abacaxi, { radius=20, density=1.0, friction=0.3})
+physics.addBody(abacaxi, { radius=20})
 
 cerveja = display.newImage("comidas/m.png")
 cerveja.name = "gorduroso"
+cerveja.x = meiox
 cerveja.alpha = 0
 cerveja:scale(.15,.15)
-physics.addBody(cerveja,{ radius=20, density=1.0, friction=0.3})
+physics.addBody(cerveja,{ radius=20})
 hotDog = display.newImage("comidas/m2.png")
 hotDog.name = "gorduroso"
+hotDog.x = meiox
 hotDog.alpha = 0
 hotDog:scale(.05,.05)
-physics.addBody(hotDog,{ radius=20, density=1.0, friction=0.3})
+physics.addBody(hotDog,{ radius=20})
 sorvete = display.newImage("comidas/m3.png")
 sorvete.name = "gorduroso"
+sorvete.x = meiox
 sorvete.alpha = 0
 sorvete:scale(.1,.1)
-physics.addBody(sorvete,{ radius=20, density=1.0, friction=0.3})
+physics.addBody(sorvete,{ radius=20})
 bolo = display.newImage("comidas/m5.png")
 bolo.name = "gorduroso"
+bolo.x = meiox
 bolo:scale(.02,.02)
 bolo.alpha = 0
-physics.addBody(bolo,{ radius=35, density=0.1, friction=0.1})
+physics.addBody(bolo,{ radius=30})
 -- Adicionando Sprite
 local folha =  { width=80, height=107.3, numFrames=12 }
 local imagem = graphics.newImageSheet("fat.png", folha)
@@ -95,11 +103,11 @@ local comandos =
 }
 
 local player = display.newSprite(imagem, comandos)
-player.x = meiox-190
+player.x = meiox-160
 player.y = meioy+93
 player.name = "John"
-local playerShape = { -5,-55, 27,55, -35,0 }
-physics.addBody(player, "kinematic",{shape=playerShape})
+local playerShape = { -0,-40, 20,45, -22,0 }
+physics.addBody(player, "kinematic",{shape=playerShape, isSensor=true})
 player:setSequence("direita")
 
 
@@ -182,24 +190,24 @@ function colisao(event)
 if ( event.phase == "began" ) then
 
 if(event.object1.name == "saudavel" and event.object2.name == "John") then 
-pontuacao = pontuacao - 0.5
-atualizarPontuacao()
 event.object1.alpha = 0
+pontuacao = pontuacao - 1
+atualizarPontuacao()
 end
 if(event.object1.name == "John" and event.object2.name == "saudavel") then
-pontuacao = pontuacao - 0.5
-atualizarPontuacao()
 event.object2.alpha = 0
+pontuacao = pontuacao - 1
+atualizarPontuacao()
 end
 if(event.object1.name == "gorduroso" and event.object2.name == "John") then
-pontuacao = pontuacao + 0.5
-atualizarPontuacao()
 event.object1.alpha = 0
+pontuacao = pontuacao + 1
+atualizarPontuacao()
 end
 if(event.object1.name == "John" and event.object2.name == "gorduroso") then
-pontuacao = pontuacao + 0.5
-atualizarPontuacao()
 event.object2.alpha = 0
+pontuacao = pontuacao + 1
+atualizarPontuacao()
 end
 end
 end
