@@ -3,6 +3,8 @@ local scene = composer.newScene()
 -- Adicionando física ao jogo
 local physics = require("physics")
 physics.start()
+physics.setDrawMode( "hybrid")
+
 local physicsData = (require "shapedefs").physicsData(1.0)
 -- Componentes do jogo
 local origemx = display.contentWidth
@@ -37,43 +39,43 @@ cereja = display.newImage("comidas/s.png")
 cereja.alpha = 0
 cereja:scale(.05,.05)
 cereja.name = "saudavel"
-physics.addBody(cereja, { radius=5, density=1.0, friction=0.3, bounce=0.2 })
+physics.addBody(cereja, { radius=20, density=1.0, friction=0.3})
 coco = display.newImage("comidas/s2.png")
 coco.alpha = 0
 coco:scale(.08,.08)
 coco.name = "saudavel"
-physics.addBody(coco,  { radius=5, density=1.0, friction=0.3, bounce=0.2 })
+physics.addBody(coco,  { radius=20, density=1.0, friction=0.3})
 salada = display.newImage("comidas/s3.png")
 salada.name = "saudavel"
 salada:scale(.05,.05)
 salada.alpha = 0
-physics.addBody(salada, { radius=5, density=1.0, friction=0.3, bounce=0.2 })
+physics.addBody(salada, { radius=20, density=1.0, friction=0.3})
 abacaxi = display.newImage("comidas/s5.png")
 abacaxi.name = "saudavel"
 abacaxi:scale(.01,.01)
 abacaxi.alpha = 0
-physics.addBody(abacaxi, { radius=5, density=1.0, friction=0.3, bounce=0.2 })
+physics.addBody(abacaxi, { radius=20, density=1.0, friction=0.3})
 
 cerveja = display.newImage("comidas/m.png")
 cerveja.name = "gorduroso"
 cerveja.alpha = 0
 cerveja:scale(.15,.15)
-physics.addBody(cerveja,{ radius=5, density=1.0, friction=0.3, bounce=0.2 })
+physics.addBody(cerveja,{ radius=20, density=1.0, friction=0.3})
 hotDog = display.newImage("comidas/m2.png")
 hotDog.name = "gorduroso"
 hotDog.alpha = 0
 hotDog:scale(.05,.05)
-physics.addBody(hotDog,{ radius=5, density=1.0, friction=0.3, bounce=0.2 })
+physics.addBody(hotDog,{ radius=20, density=1.0, friction=0.3})
 sorvete = display.newImage("comidas/m3.png")
 sorvete.name = "gorduroso"
 sorvete.alpha = 0
 sorvete:scale(.1,.1)
-physics.addBody(sorvete,{ radius=5, density=1.0, friction=0.3, bounce=0.2 })
+physics.addBody(sorvete,{ radius=20, density=1.0, friction=0.3})
 bolo = display.newImage("comidas/m5.png")
 bolo.name = "gorduroso"
 bolo:scale(.02,.02)
 bolo.alpha = 0
-physics.addBody(bolo,{ radius=5, density=0.1, friction=0.1, bounce=0.2 })
+physics.addBody(bolo,{ radius=35, density=0.1, friction=0.1})
 -- Adicionando Sprite
 local folha =  { width=80, height=107.3, numFrames=12 }
 local imagem = graphics.newImageSheet("fat.png", folha)
@@ -93,22 +95,13 @@ local comandos =
 }
 
 local player = display.newSprite(imagem, comandos)
--- cria finalmente a sprite utilizando as propriedades vistas acima
 player.x = meiox-190
 player.y = meioy+93
 player.name = "John"
-physics.addBody(player, "static")
+local playerShape = { -5,-55, 27,55, -35,0 }
+physics.addBody(player, "kinematic",{shape=playerShape})
 player:setSequence("direita")
 
-local teto = display.newRect( _W2, -1, _W+100, 1 )
-teto:setFillColor( 0,0,0 )
-physics.addBody( teto, "static")
-teto.name = "teto"
-
-local piso = display.newRect( _W2, _H, _W+100, 1 )
-piso:setFillColor( 0, 0, 0 )
-physics.addBody( piso, "static", physicsData:get("fat"))
-piso.name = "piso"
 
 listaAlimentos = {
 [0] = cerveja,
@@ -133,8 +126,6 @@ function scene:create( event )
 	playerGroup:insert(player)
 	alimentos = display.newGroup()
 	scene.view:insert(alimentos)
-	scene.view:insert( teto )
-	scene.view:insert( piso )
 	alimentos:insert( coco )
 	alimentos:insert( cereja )
 	alimentos:insert( salada )
@@ -182,7 +173,7 @@ function mostrarAlimentos(event)
 	alimento.alpha = 1
 	alimento.x = _W
 	alimento.y = math.random(meioy, meioy+95 )
-	alimento.isSensor = true  
+	--alimento.isSensor = true  
   transition.to( alimento, {time = 3000, rotation = -180, x = -50, y = alimento.y, onComplete = removerAlimento})
 end
 
@@ -190,7 +181,7 @@ function colisao(event)
 
 if ( event.phase == "began" ) then
 
-if(event.object1.name == "saudavel" and event.object2.name == "John") then
+if(event.object1.name == "saudavel" and event.object2.name == "John") then 
 pontuacao = pontuacao - 0.5
 atualizarPontuacao()
 event.object1.alpha = 0
