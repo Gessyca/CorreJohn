@@ -15,18 +15,18 @@ cj.alpha=0
 
 --BOTÃO Play
 playButton = display.newImage("play.png");
-playButton.xScale = 0.1;
-playButton.yScale = 0.1;
-playButton.x = (meiox + 210);
-playButton.y = (meioy + 120);
+playButton.xScale = .14;
+playButton.yScale = .14;
+playButton.x = (meiox + 200);
+playButton.y = (meioy + 110);
 
 --BOTÃO About
 
 about = display.newImage("about.png")
-about.xScale = 0.3
-about.yScale = 0.3
+about.xScale = .14
+about.yScale = .14
 about.x = meiox - 200
-about.y = meioy + 120
+about.y = meioy + 110
 		
 function scene:createScene(event)
 			local scenegroup = self.view;
@@ -55,10 +55,10 @@ function scene:hide( event )
 end
 
 function mostrarNomeJogo(event)
-				transition.to ( cj, {time = 1000, alpha=1 ,xScale=1.3 , yScale=1.3, onComplete =moveNomeJogo} )
+				transition.to ( cj, {time = 1000, alpha=1 ,xScale=0.3 , yScale=0.3, onComplete =moveNomeJogo} )
 			end
 			function moveNomeJogo()
-				transition.to ( cj, {time = 1000, alpha=1 ,xScale=1 , yScale=1, onComplete =mostrarNomeJogo} )
+				transition.to ( cj, {time = 1000, alpha=1 ,xScale=0.2 , yScale=0.2, onComplete =mostrarNomeJogo} )
 			end
 			
 function startGame( )
