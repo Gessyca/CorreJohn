@@ -29,7 +29,7 @@ background3.y = meioy
 local pontuacao = 150
 local pontuacaoTxt = display.newText( "Peso atual: "..pontuacao, 60, 15, "Helvetica", 20)
 pontuacaoTxt:setTextColor ( 255, 0, 0 )
-local Meta = display.newText( "Meta: 60Kg", 200, 15, "Helvetica", 20)
+local Meta = display.newText( "Meta: 50Kg", 200, 15, "Helvetica", 20)
 
 -- alimentos saudáveis
 cereja = display.newImage("comidas/s.png")
@@ -119,6 +119,10 @@ listaAlimentos = {
 [7] = abacaxi
 }
 local alimento
+local alimento2
+local alimento3
+local alimento4
+local alimento5
 local tm
 function scene:create( event )
     local sceneGroup = self.view
@@ -177,12 +181,50 @@ function scene:destroy( event )
 end
 
 function mostrarAlimentos(event)
-	indice = math.random(0,7)
+na = criarMaisAlimentos()
+indice = math.random(0,7)
 	alimento = listaAlimentos[indice]
 	alimento.alpha = 1
-	alimento.x = _W
+	alimento.x = _W - 100
 	alimento.y = math.random(meioy+50, meioy+110)
-  transition.to( alimento, {time = 3000, rotation = -180, x = -50, y = alimento.y, onComplete = removerAlimento})
+	transition.to( alimento, {time = 3500, rotation = -180, x = -50, y = alimento.y, onComplete = removerAlimento})
+if(na == 2) then
+		indice = math.random(0,7)
+		alimento2 = listaAlimentos[indice]
+		alimento2.alpha = 1
+		alimento2.x = _W + 100
+		alimento2.y = math.random(meioy+30, meioy+120)
+		transition.to( alimento2, {time = 3500, rotation = -180, x = -50, y = alimento2.y, onComplete = removerAlimento})
+ end
+  if(na == 3) then
+		indice = math.random(0,7)
+		alimento3 = listaAlimentos[indice]
+		alimento3.alpha = 1
+		alimento3.x = _W + 200
+		alimento3.y = math.random(meioy+40, meioy+140)
+		transition.to( alimento3, {time = 3500, rotation = -180, x = -50, y = alimento3.y, onComplete = removerAlimento})
+  end
+  if(na == 4) then
+		indice = math.random(0,7)
+		alimento4 = listaAlimentos[indice]
+		alimento4.alpha = 1
+		alimento4.x = _W + 350
+		alimento4.y = math.random(meioy+20, meioy+140)
+		transition.to( alimento4, {time = 3500, rotation = -180, x = -50, y = alimento4.y, onComplete = removerAlimento})
+  end
+end
+
+function criarMaisAlimentos()
+valor = pontuacao
+if (valor <= 130 and valor > 110) then
+return 2
+end
+if (valor <= 110 and valor > 90) then
+return 3
+end
+if (valor <= 90) then
+return 4
+end
 end
 
 function colisao(event)
@@ -221,9 +263,22 @@ function compararPontuacaoMeta()
 -- Lógica Aqui
 
 end
+
 function removerAlimento()
 alimento.rotation = -45
 alimento.alpha = 0
+if(alimento2 ~= nil) then
+alimento2.rotation = -45
+alimento2.alpha = 0
+end
+if(alimento3 ~= nil) then
+alimento3.rotation = -45
+alimento3.alpha = 0
+end
+if(alimento4 ~= nil) then
+alimento4.rotation = -45
+alimento4.alpha = 0
+end
 end
 
 -- remove qualquer objeto através de um evento
