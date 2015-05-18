@@ -26,9 +26,6 @@ local background3 = display.newImageRect("background.png",origemx,origemy)
 background3.x = background2.x + origemx
 background3.y = meioy
 
-local donuts = display.newImage("donut.png",meiox+220, meioy+130)
-donuts:scale(.1,.1)
-
 local pontuacao = 150
 local pontuacaoTxt = display.newText( "Peso atual: "..pontuacao, 60, 15, "Helvetica", 20)
 pontuacaoTxt:setTextColor ( 255, 0, 0 )
@@ -129,7 +126,6 @@ function scene:create( event )
 	scene.view:insert(background)
 	scene.view:insert(background2)
 	scene.view:insert(background3)
-	scene.view:insert(donuts)
 	scene.view:insert(pontuacaoTxt)
 	playerGroup:insert(player)
 	alimentos = display.newGroup()
@@ -151,9 +147,15 @@ function scene:show( event )
 
     if ( phase == "did" ) then
 	player:play()
-	aparecerDonuts()
 	Runtime:addEventListener("enterFrame", backgroundLoop)
-	donuts:addEventListener("tap",pular)
+	coco:addEventListener("touch", removerObjeto)
+	cereja:addEventListener("touch", removerObjeto)
+	salada:addEventListener("touch", removerObjeto)
+	abacaxi:addEventListener("touch", removerObjeto)
+	cerveja:addEventListener("touch", removerObjeto)
+	hotDog:addEventListener("touch", removerObjeto)
+	sorvete:addEventListener("touch", removerObjeto)
+	bolo:addEventListener("touch", removerObjeto)
 	tm = timer.performWithDelay( 4000,mostrarAlimentos ,0)
 	Runtime:addEventListener("collision", colisao)
     end
@@ -166,7 +168,6 @@ function scene:hide( event )
 
    if ( phase == "will" ) then
     timer.cancel(tm)
-	donuts:removeEventListener("tap",pular)
 	Runtime:removeEventListener("collision", colisao)
     end
 end
@@ -180,8 +181,7 @@ function mostrarAlimentos(event)
 	alimento = listaAlimentos[indice]
 	alimento.alpha = 1
 	alimento.x = _W
-	alimento.y = math.random(meioy, meioy+95 )
-	--alimento.isSensor = true  
+	alimento.y = math.random(meioy+50, meioy+110)
   transition.to( alimento, {time = 3000, rotation = -180, x = -50, y = alimento.y, onComplete = removerAlimento})
 end
 
@@ -189,22 +189,22 @@ function colisao(event)
 
 if ( event.phase == "began" ) then
 
-if(event.object1.name == "saudavel" and event.object2.name == "John") then 
+if(event.object1.name == "saudavel" and event.object2.name == "John" and event.object1.alpha == 1) then 
 event.object1.alpha = 0
 pontuacao = pontuacao - 1
 atualizarPontuacao()
 end
-if(event.object1.name == "John" and event.object2.name == "saudavel") then
+if(event.object1.name == "John" and event.object2.name == "saudavel" and event.object2.alpha == 1) then
 event.object2.alpha = 0
 pontuacao = pontuacao - 1
 atualizarPontuacao()
 end
-if(event.object1.name == "gorduroso" and event.object2.name == "John") then
+if(event.object1.name == "gorduroso" and event.object2.name == "John" and event.object1.alpha == 1) then
 event.object1.alpha = 0
 pontuacao = pontuacao + 1
 atualizarPontuacao()
 end
-if(event.object1.name == "John" and event.object2.name == "gorduroso") then
+if(event.object1.name == "John" and event.object2.name == "gorduroso" and event.object2.alpha == 1) then
 event.object2.alpha = 0
 pontuacao = pontuacao + 1
 atualizarPontuacao()
@@ -226,25 +226,11 @@ alimento.rotation = -45
 alimento.alpha = 0
 end
 
-function aparecerDonuts()
-transition.to (donuts, {time = 1000, xScale = .15, yScale = .15, onComplete = moverDonuts})
-end
-function moverDonuts()
-transition.to (donuts, {time = 1000, xScale = .1, yScale = .1, onComplete = aparecerDonuts})
-end
-
-function pular()
-transition.to(player, {time=400, y = meioy, onComplete = descer})
-end
-
-function descer()
-transition.to(player, {time=400, y = meioy+89})
-end
-
 -- remove qualquer objeto através de um evento
 function removerObjeto(event)
 	local obj = event.target
-	display.remove( obj ) 
+	obj.alpha = 0
+	--display.remove( obj ) 
 	return true
 end
 
