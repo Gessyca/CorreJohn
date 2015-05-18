@@ -29,7 +29,9 @@ background3.y = meioy
 local pontuacao = 150
 local pontuacaoTxt = display.newText( "Peso atual: "..pontuacao, 60, 15, "Helvetica", 20)
 pontuacaoTxt:setTextColor ( 255, 0, 0 )
-local Meta = display.newText( "Meta: 50Kg", 200, 15, "Helvetica", 20)
+local meta = display.newText( "Meta: 50Kg", 200, 15, "Helvetica", 20)
+local limite = display.newText( "Limite peso: 200Kg", 350, 15, "Helvetica", 20)
+limite:setTextColor ( 255, 255, 0 )
 
 -- alimentos saudáveis
 cereja = display.newImage("comidas/s.png")
@@ -81,6 +83,11 @@ bolo.x = meiox
 bolo:scale(.02,.02)
 bolo.alpha = 0
 physics.addBody(bolo,{ radius=30})
+
+gameOver = display.newImage("gameover.png",meiox,meioy)
+gameOver:scale(.2,.2)
+gameOver.alpha = 0
+
 -- Adicionando Sprite
 local folha =  { width=80, height=107.3, numFrames=12 }
 local imagem = graphics.newImageSheet("fat.png", folha)
@@ -252,6 +259,7 @@ pontuacao = pontuacao + 1
 atualizarPontuacao()
 end
 end
+compararPontuacaoMeta()
 end
 
 function atualizarPontuacao()
@@ -259,9 +267,15 @@ pontuacaoTxt.text = string.format( "Peso atual: %d", pontuacao)
 end
 
 function compararPontuacaoMeta()
+if(pontuacao == 50)then
+-- Ganhou!!!
+end
 
--- Lógica Aqui
-
+if(pontuacao == 200) then
+gameOver.alpha = 1
+display.remove(player)
+display.remove(alimentos)
+end
 end
 
 function removerAlimento()
