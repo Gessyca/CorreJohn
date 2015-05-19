@@ -10,7 +10,7 @@ local  meioy = display.contentCenterY
 local background = display.newImage("background.png")
 
 --Imagem com Nome do Jogo
-local cj = display.newImage( "cj.png", meiox,meioy)
+cj = display.newImage( "cj.png", meiox,meioy)
 cj.alpha=0
 
 --BOTÃO Play
@@ -29,6 +29,8 @@ about.x = meiox - 200
 about.y = meioy + 110
 		
 function scene:createScene(event)
+			composer.removeScene("about")
+			composer.removeScene("gameOver")
 			local scenegroup = self.view;
 			scene.view:insert(background);
 			scene.view:insert(cj);		
@@ -37,8 +39,9 @@ end
 function scene:show( event )
     local sceneGroup = self.view
 	local phase = event.phase
-	if (phase == "will") then		
-	elseif (phase == "did") then
+	composer.removeScene("gameOver")
+	composer.removeScene("about")
+	if (phase == "did") then
 		playButton:addEventListener( "tap", startGame )
 		about:addEventListener("tap", informacoes)
 		mostrarNomeJogo()
@@ -49,6 +52,8 @@ function scene:hide( event )
     local sceneGroup = self.view
     local phase = event.phase
 	if (phase == "will") then
+		transition.cancel(mostrarNomeJogo)
+		transition.cancel(moveNomeJogo)
 		playButton:removeEventListener( "tap", startGame )
 		about:removeEventListener("tap", informacoes)
 	end
@@ -57,17 +62,17 @@ end
 function mostrarNomeJogo(event)
 				transition.to ( cj, {time = 1000, alpha=1 ,xScale=0.3 , yScale=0.3, onComplete =moveNomeJogo} )
 			end
-			function moveNomeJogo()
+function moveNomeJogo()
 				transition.to ( cj, {time = 1000, alpha=1 ,xScale=0.2 , yScale=0.2, onComplete =mostrarNomeJogo} )
 			end
 			
 function startGame( )
-	display.remove(background);
-	display.remove(cj);
-	transition.cancel(cj);
-	display.remove(playButton);
-	display.remove(about);
-	composer.gotoScene("game");
+	display.remove(background)
+	display.remove(cj)
+	transition.cancel(cj)
+	display.remove(playButton)
+	display.remove(about)
+	composer.gotoScene("game")
 end
 
 function informacoes( )

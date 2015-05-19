@@ -5,7 +5,6 @@ local physics = require("physics")
 physics.start()
 --physics.setDrawMode( "hybrid")
 
-local physicsData = (require "shapedefs").physicsData(1.0)
 -- Componentes do jogo
 local origemx = display.contentWidth
 local origemy = display.contentHeight
@@ -26,7 +25,6 @@ local background3 = display.newImageRect("background.png",origemx,origemy)
 background3.x = background2.x + origemx
 background3.y = meioy
 
-local pontuacao = 150
 local pontuacaoTxt = display.newText( "Peso atual: "..pontuacao, 60, 15, "Helvetica", 20)
 pontuacaoTxt:setTextColor ( 255, 0, 0 )
 local meta = display.newText( "Meta: 50Kg", 200, 15, "Helvetica", 20)
@@ -84,10 +82,6 @@ bolo:scale(.02,.02)
 bolo.alpha = 0
 physics.addBody(bolo,{ radius=30})
 
-gameOver = display.newImage("gameover.png",meiox,meioy)
-gameOver:scale(.2,.2)
-gameOver.alpha = 0
-
 -- Adicionando Sprite
 local folha =  { width=80, height=107.3, numFrames=12 }
 local imagem = graphics.newImageSheet("fat.png", folha)
@@ -133,6 +127,7 @@ local alimento5
 local tm
 function scene:create( event )
     local sceneGroup = self.view
+	composer.removeScene("menu")
 	playerGroup = display.newGroup()
 	scene.view:insert(background)
 	scene.view:insert(background2)
@@ -154,8 +149,7 @@ end
 function scene:show( event )
 
     local sceneGroup = self.view
-    local phase = event.phase
-
+    local phase = event.phase	
     if ( phase == "did" ) then
 	player:play()
 	Runtime:addEventListener("enterFrame", backgroundLoop)
@@ -173,18 +167,22 @@ function scene:show( event )
 end
 
 function scene:hide( event )
-
     local sceneGroup = self.view
     local phase = event.phase
 
    if ( phase == "will" ) then
     timer.cancel(tm)
+	coco:removeEventListener("touch", removerObjeto)
+	cereja:removeEventListener("touch", removerObjeto)
+	salada:removeEventListener("touch", removerObjeto)
+	abacaxi:removeEventListener("touch", removerObjeto)
+	cerveja:removeEventListener("touch", removerObjeto)
+	hotDog:removeEventListener("touch", removerObjeto)
+	sorvete:removeEventListener("touch", removerObjeto)
+	bolo:removeEventListener("touch", removerObjeto)
 	Runtime:removeEventListener("collision", colisao)
+	Runtime:removeEventListener("enterFrame", backgroundLoop)
     end
-end
-
-function scene:destroy( event )
-    local sceneGroup = self.view
 end
 
 function mostrarAlimentos(event)
@@ -270,13 +268,18 @@ function compararPontuacaoMeta()
 if(pontuacao == 50)then
 -- Ganhou!!!
 end
-
-if(pontuacao == 200) then
-gameOver.alpha = 1
+if(pontuacao == 151) then
 display.remove(player)
-display.remove(alimentos)
+composer.gotoScene("gameOver")
 end
 end
+
+function moverMenu(event)
+				transition.to ( menu, {time = 1000, alpha=1 ,xScale=0.12 , yScale=0.12, onComplete =moveNomeMenu} )
+			end
+			function moveNomeMenu()
+				transition.to ( menu, {time = 1000, alpha=1 ,xScale=0.14 , yScale=0.14, onComplete =moverMenu} )
+			end
 
 function removerAlimento()
 alimento.rotation = -45
@@ -322,6 +325,5 @@ end
 scene:addEventListener( "create", scene )
 scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
-scene:addEventListener( "destroy", scene )
 
 return scene
