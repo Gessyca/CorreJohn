@@ -28,6 +28,8 @@ composer.gotoScene("menu")
 display.remove(menu)
 display.remove(background)
 display.remove(gameOver)
+--transition.cancel(moverBotaoMenu)
+--transition.cancel(move)
 end
 
 function moverBotaoMenu()
@@ -56,6 +58,7 @@ function scene:hide( event )
 	if (phase == "will") then
 	transition.cancel(moverBotaoMenu)
 	transition.cancel(move)
+	transition.cancel(menu)
 	menu:removeEventListener( "tap", irParaMenu )
 	end
 end
