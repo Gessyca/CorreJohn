@@ -128,6 +128,7 @@ local tm
 function scene:create( event )
     local sceneGroup = self.view
 	composer.removeScene("menu")
+	composer.removeScene("gameOver")
 	playerGroup = display.newGroup()
 	scene.view:insert(background)
 	scene.view:insert(background2)

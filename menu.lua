@@ -10,11 +10,11 @@ local  meioy = display.contentCenterY
 local background = display.newImage("background.png")
 
 --Imagem com Nome do Jogo
-cj = display.newImage( "cj.png", meiox,meioy)
+local cj = display.newImage( "cj.png", meiox,meioy)
 cj.alpha=0
 
 --BOTÃO Play
-playButton = display.newImage("play.png");
+local playButton = display.newImage("play.png");
 playButton.xScale = .14;
 playButton.yScale = .14;
 playButton.x = (meiox + 200);
@@ -22,15 +22,13 @@ playButton.y = (meioy + 110);
 
 --BOTÃO About
 
-about = display.newImage("about.png")
+local about = display.newImage("about.png")
 about.xScale = .14
 about.yScale = .14
 about.x = meiox - 200
 about.y = meioy + 110
 		
 function scene:createScene(event)
-			composer.removeScene("about")
-			composer.removeScene("gameOver")
 			local scenegroup = self.view;
 			scene.view:insert(background);
 			scene.view:insert(cj);		
@@ -38,9 +36,9 @@ end
 
 function scene:show( event )
     local sceneGroup = self.view
-	local phase = event.phase
-	composer.removeScene("gameOver")
 	composer.removeScene("about")
+	composer.removeScene("gameOver")
+	local phase = event.phase
 	if (phase == "did") then
 		playButton:addEventListener( "tap", startGame )
 		about:addEventListener("tap", informacoes)
@@ -52,10 +50,9 @@ function scene:hide( event )
     local sceneGroup = self.view
     local phase = event.phase
 	if (phase == "will") then
-		transition.cancel(mostrarNomeJogo)
-		transition.cancel(moveNomeJogo)
 		playButton:removeEventListener( "tap", startGame )
 		about:removeEventListener("tap", informacoes)
+		transition.cancel(cj)
 	end
 end
 
@@ -69,7 +66,6 @@ function moveNomeJogo()
 function startGame( )
 	display.remove(background)
 	display.remove(cj)
-	transition.cancel(cj)
 	display.remove(playButton)
 	display.remove(about)
 	composer.gotoScene("game")
@@ -78,7 +74,6 @@ end
 function informacoes( )
 	display.remove(background);
 	display.remove(cj);
-	transition.cancel(cj);
 	display.remove(playButton);
 	display.remove(about);
 	composer.gotoScene("about", { effect = "zoomOutIn"});
