@@ -57,6 +57,8 @@ function mostrarAlimentos(event)
 end
 
 function irParaMenu(event)
+audio.play(botao);
+audio.setVolume( 0.30 , { channel=1 })
 pontuacao = 150
 composer.gotoScene("menu")
 display.remove(menu)
@@ -69,6 +71,8 @@ display.remove(hotDog)
 end
 
 function irParaGame(event)
+audio.play(botao);
+audio.setVolume( 0.30 , { channel=1 })
 pontuacao = 150
 composer.gotoScene("game")
 display.remove(menu)

@@ -81,7 +81,8 @@ bolo.x = meiox
 bolo:scale(.02,.02)
 bolo.alpha = 0
 physics.addBody(bolo,{ radius=30})
-
+--audio
+local eat = audio.loadSound('sons/eat.mp3');
 -- Adicionando Sprite
 local folha =  { width=80, height=107.3, numFrames=12 }
 local imagem = graphics.newImageSheet("fat.png", folha)
@@ -234,25 +235,27 @@ end
 end
 
 function colisao(event)
-
 if ( event.phase == "began" ) then
-
 if(event.object1.name == "saudavel" and event.object2.name == "John" and event.object1.alpha == 1) then 
+audio.play(eat,{duration = 30000})
 event.object1.alpha = 0
 pontuacao = pontuacao - 1
 atualizarPontuacao()
 end
 if(event.object1.name == "John" and event.object2.name == "saudavel" and event.object2.alpha == 1) then
+audio.play(eat,{duration = 30000})
 event.object2.alpha = 0
 pontuacao = pontuacao - 1
 atualizarPontuacao()
 end
 if(event.object1.name == "gorduroso" and event.object2.name == "John" and event.object1.alpha == 1) then
+audio.play(eat,{duration = 30000})
 event.object1.alpha = 0
 pontuacao = pontuacao + 1
 atualizarPontuacao()
 end
 if(event.object1.name == "John" and event.object2.name == "gorduroso" and event.object2.alpha == 1) then
+audio.play(eat,{duration = 30000})
 event.object2.alpha = 0
 pontuacao = pontuacao + 1
 atualizarPontuacao()

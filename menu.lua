@@ -13,6 +13,9 @@ local background = display.newImage("background.png")
 local cj = display.newImage( "cj.png", meiox,meioy)
 cj.alpha=0
 
+--audios
+botao = audio.loadSound('sons/botao.mp3');
+
 --BOTÃO Play
 local playButton = display.newImage("play.png");
 playButton.xScale = .14;
@@ -64,6 +67,8 @@ function moveNomeJogo()
 			end
 			
 function startGame( )
+audio.play(botao);
+ audio.setVolume( 0.30 , { channel=1 }) 
 	display.remove(background)
 	display.remove(cj)
 	display.remove(playButton)
@@ -72,6 +77,8 @@ function startGame( )
 end
 
 function informacoes( )
+audio.play(botao);
+ audio.setVolume( 0.30 , { channel=1 })
 	display.remove(background);
 	display.remove(cj);
 	display.remove(playButton);
