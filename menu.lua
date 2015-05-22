@@ -80,13 +80,13 @@ end
 
 function informacoes( )
 audio.play(botao);
-audio.setVolume( 0.30 , { channel=1 })
+audio.setVolume( 0.30 , { channel=2 })
 audio.stop(1)
 	display.remove(background);
 	display.remove(cj);
 	display.remove(playButton);
 	display.remove(about);
-	composer.gotoScene("about", { effect = "zoomOutIn"});
+	composer.gotoScene("about");
 end
 
 scene:addEventListener( "create", scene )
