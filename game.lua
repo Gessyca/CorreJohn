@@ -152,6 +152,8 @@ function scene:show( event )
 
     local sceneGroup = self.view
     local phase = event.phase	
+	local somMenu = audio.loadStream("sons/sgame.wav");
+	local somBack = audio.play(somMenu,{chanel=1, loops=-1})
     if ( phase == "did" ) then
 	player:play()
 	Runtime:addEventListener("enterFrame", backgroundLoop)
@@ -273,6 +275,7 @@ if(pontuacao == 50)then
 -- Ganhou!!!
 end
 if(pontuacao == 151) then
+audio.stop()
 display.remove(player)
 composer.gotoScene("gameOver")
 end

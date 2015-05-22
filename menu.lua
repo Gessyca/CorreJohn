@@ -15,7 +15,6 @@ cj.alpha=0
 
 --audios
 botao = audio.loadSound('sons/botao.mp3');
-
 --BOTÃO Play
 local playButton = display.newImage("play.png");
 playButton.xScale = .14;
@@ -34,13 +33,15 @@ about.y = meioy + 110
 function scene:createScene(event)
 			local scenegroup = self.view;
 			scene.view:insert(background);
-			scene.view:insert(cj);		
+			scene.view:insert(cj);			
 end
 
 function scene:show( event )
     local sceneGroup = self.view
+	local somMenu = audio.loadStream("sons/smenus.wav");
+	audio.play(somMenu, {channel = 1})
 	composer.removeScene("about")
-	composer.removeScene("gameOver")
+	composer.removeScene("gameOver")		
 	local phase = event.phase
 	if (phase == "did") then
 		playButton:addEventListener( "tap", startGame )
@@ -69,6 +70,7 @@ function moveNomeJogo()
 function startGame( )
 audio.play(botao);
  audio.setVolume( 0.30 , { channel=1 }) 
+ audio.stop(1)
 	display.remove(background)
 	display.remove(cj)
 	display.remove(playButton)
@@ -78,7 +80,8 @@ end
 
 function informacoes( )
 audio.play(botao);
- audio.setVolume( 0.30 , { channel=1 })
+audio.setVolume( 0.30 , { channel=1 })
+audio.stop(1)
 	display.remove(background);
 	display.remove(cj);
 	display.remove(playButton);

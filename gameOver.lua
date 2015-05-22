@@ -59,6 +59,7 @@ end
 function irParaMenu(event)
 audio.play(botao);
 audio.setVolume( 0.30 , { channel=1 })
+audio.stop()
 pontuacao = 150
 composer.gotoScene("menu")
 display.remove(menu)
@@ -73,6 +74,7 @@ end
 function irParaGame(event)
 audio.play(botao);
 audio.setVolume( 0.30 , { channel=1 })
+audio.stop(1)
 pontuacao = 150
 composer.gotoScene("game")
 display.remove(menu)
@@ -101,6 +103,9 @@ end
 function scene:show( event )
     local sceneGroup = self.view
 	local phase = event.phase
+	local eat = audio.loadSound('sons/sgameo.wav');
+	local gameOver = audio.loadSound('sons/sgameo.wav');
+	audio.play(eat)
 	composer.removeScene("game")
 	composer.removeScene("menu")
 	if (phase == "will") then		
