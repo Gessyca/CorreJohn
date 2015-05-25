@@ -39,6 +39,8 @@ end
 function scene:show( event )
     local sceneGroup = self.view
 	local somMenu = audio.loadStream("sons/smenus.wav");
+	audio.setVolume( 0.3 )
+	audio.fadeOut( { channel=1, time=5000 } )
 	audio.play(somMenu, {channel = 1})
 	composer.removeScene("about")
 	composer.removeScene("gameOver")		
@@ -68,9 +70,8 @@ function moveNomeJogo()
 			end
 			
 function startGame( )
-audio.play(botao);
- audio.setVolume( 0.30 , { channel=1 }) 
- audio.stop(1)
+audio.play(botao,{ channel=3 }); 
+audio.stop(1)
 	display.remove(background)
 	display.remove(cj)
 	display.remove(playButton)
@@ -79,8 +80,7 @@ audio.play(botao);
 end
 
 function informacoes( )
-audio.play(botao);
-audio.setVolume( 0.30 , { channel=2 })
+audio.play(botao,{ channel=2});
 audio.stop(1)
 	display.remove(background);
 	display.remove(cj);

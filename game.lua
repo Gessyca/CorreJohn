@@ -153,6 +153,7 @@ function scene:show( event )
     local sceneGroup = self.view
     local phase = event.phase	
 	local somMenu = audio.loadStream("sons/sgame.wav");
+	audio.setVolume( 0.5 )
 	local somBack = audio.play(somMenu,{chanel=1, loops=-1})
     if ( phase == "did" ) then
 	player:play()
@@ -225,10 +226,10 @@ end
 
 function criarMaisAlimentos()
 valor = pontuacao
-if (valor <= 130 and valor > 110) then
+if (valor <= 140 and valor > 120) then
 return 2
 end
-if (valor <= 110 and valor > 90) then
+if (valor <= 120 and valor > 90) then
 return 3
 end
 if (valor <= 90) then

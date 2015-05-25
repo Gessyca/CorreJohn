@@ -13,7 +13,7 @@ local gameOver = display.newImage("gameover.png",meiox,meioy - 50)
 gameOver:scale(.12,.12)
 playButton = display.newImage("play.png",meiox - 230,meioy + 110);
 playButton:scale(.14,.14);
-
+botao = audio.loadSound('sons/botao.mp3');
 menu = display.newImage("menu.png", meiox + 230, meioy + 110)
 menu:scale(.14,.14);
 
@@ -58,8 +58,6 @@ end
 
 function irParaMenu(event)
 audio.play(botao);
-audio.setVolume( 0.30 , { channel=1 })
-audio.stop()
 pontuacao = 150
 composer.gotoScene("menu")
 display.remove(menu)
@@ -73,8 +71,6 @@ end
 
 function irParaGame(event)
 audio.play(botao);
-audio.setVolume( 0.30 , { channel=1 })
-audio.stop(1)
 pontuacao = 150
 composer.gotoScene("game")
 display.remove(menu)

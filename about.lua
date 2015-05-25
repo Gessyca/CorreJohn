@@ -12,18 +12,18 @@ menu = display.newImage("menu.png", meiox + 230, meioy + 110)
 menu:scale(.14,.14);
 local comojogar = display.newImage("comojogar.png",meiox,meioy - 100)
 comojogar:scale(.08,.08)
-
+botao = audio.loadSound('sons/botao.mp3');
 -- Texto About
 local texto = display.newText("Vamos ajudar o John a emagrecer?", meiox, meioy-50, "Helvetica", 20)
-texto:setTextColor ( 0, 0, 255 )
+texto:setTextColor ( 0, 0, 0 )
 local texto2 = display.newText("Para isso preciso que toque nos alimentos não saudáveis", meiox, meioy-30, "Helvetica", 20)
-texto2:setTextColor ( 0, 0, 255 )
+texto2:setTextColor ( 0, 0, 0 )
 local texto3 = display.newText("A meta do John é 50kg e caso ele chegue a 200kg", meiox, meioy-10, "Helvetica", 20)
-texto3:setTextColor ( 0, 0, 255 )
+texto3:setTextColor ( 0, 0, 0 )
 local texto4 = display.newText("terá problemas de saúde.", meiox, meioy+10, "Helvetica", 20)
-texto4:setTextColor ( 0, 0, 255 )
+texto4:setTextColor ( 0, 0, 0 )
 local texto5 = display.newText("Vamos nessa e Bom jogo.", meiox, meioy+30, "Helvetica", 20)
-texto5:setTextColor ( 255, 255, 0 )
+texto5:setTextColor ( 0, 0, 0 )
 
 function scene:createScene(event)
 			local scenegroup = self.view;
@@ -57,7 +57,7 @@ function scene:hide( event )
 end
 
 function irParaMenu(event)
-audio.play(botao)
+audio.play(botao,{ channel=4 })
 transition.cancel(menu)
 display.remove(menu)
 display.remove(background)
