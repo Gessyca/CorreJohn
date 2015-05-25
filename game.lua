@@ -191,49 +191,51 @@ function scene:hide( event )
 end
 
 function mostrarAlimentos(event)
-na = criarMaisAlimentos()
+local na = criarMaisAlimentos()
 indice = math.random(0,7)
 	alimento = listaAlimentos[indice]
 	alimento.alpha = 1
-	alimento.x = _W - 100
+	alimento.x = _W + 100
 	alimento.y = math.random(meioy+50, meioy+110)
-	transition.to( alimento, {time = 3500, rotation = -180, x = -50, y = alimento.y, onComplete = removerAlimento})
-if(na == 2) then
+	transition.to( alimento, {time = 3500, rotation = -180, x = -100, y = alimento.y, onComplete = removerAlimento})
+if(na >= 2) then
 		indice = math.random(0,7)
 		alimento2 = listaAlimentos[indice]
 		alimento2.alpha = 1
 		alimento2.x = _W + 100
 		alimento2.y = math.random(meioy+30, meioy+120)
-		transition.to( alimento2, {time = 3500, rotation = -180, x = -50, y = alimento2.y, onComplete = removerAlimento})
+		transition.to( alimento2, {time = 3000, rotation = -180, x = -150, y = alimento2.y, onComplete = removerAlimento})
  end
-  if(na == 3) then
+  if(na == 3 or na > 3 ) then
 		indice = math.random(0,7)
 		alimento3 = listaAlimentos[indice]
 		alimento3.alpha = 1
-		alimento3.x = _W + 200
+		alimento3.x = _W + 150
 		alimento3.y = math.random(meioy+40, meioy+140)
-		transition.to( alimento3, {time = 3500, rotation = -180, x = -50, y = alimento3.y, onComplete = removerAlimento})
+		transition.to( alimento3, {time = 2800, rotation = -180, x = -100, y = alimento3.y, onComplete = removerAlimento})
   end
   if(na == 4) then
 		indice = math.random(0,7)
 		alimento4 = listaAlimentos[indice]
 		alimento4.alpha = 1
-		alimento4.x = _W + 350
+		alimento4.x = _W + 150
 		alimento4.y = math.random(meioy+20, meioy+140)
-		transition.to( alimento4, {time = 3500, rotation = -180, x = -50, y = alimento4.y, onComplete = removerAlimento})
+		transition.to( alimento4, {time = 3000, rotation = -180, x = -150, y = alimento4.y, onComplete = removerAlimento})
   end
 end
 
 function criarMaisAlimentos()
-valor = pontuacao
-if (valor <= 140 and valor > 120) then
+if (pontuacao <= 140 and pontuacao > 120) then
 return 2
 end
-if (valor <= 120 and valor > 90) then
+if (pontuacao <= 120 and pontuacao > 90) then
 return 3
 end
-if (valor <= 90) then
+if (pontuacao <= 90) then
 return 4
+end
+if(pontuacao > 140) then
+return 1
 end
 end
 
