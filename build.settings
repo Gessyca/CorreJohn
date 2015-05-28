@@ -17,8 +17,8 @@ settings =
 	excludeFiles =
 	{
 		-- Include only the necessary icon files on each platform
-		iphone = { "Icon-*dpi.png", },
-		android = { "Icon.png", "Icon-Small-*.png", "Icon*@2x.png", },
+		iphone = { "cjl.png", },
+		android = { "cjl.png", "cjl.png", "cjl.png", },
 	},
 
 	--

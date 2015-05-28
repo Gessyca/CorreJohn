@@ -9,30 +9,31 @@ local  meioy = display.contentCenterY
 --Imagem de background
 local background = display.newImage("background.png")
 
-local gameOver = display.newImage("gameover.png",meiox,meioy - 50)
-gameOver:scale(.12,.12)
+local voceVenceu = display.newImage("venceu.png",meiox,meioy - 50)
+voceVenceu:scale(.14,.14)
+
 playButton = display.newImage("play.png",meiox - 230,meioy + 110);
 playButton:scale(.14,.14);
 botao = audio.loadSound('sons/botao.mp3');
 menu = display.newImage("menu.png", meiox + 230, meioy + 110)
 menu:scale(.14,.14);
 
-local hotDog = display.newImage("comidas/m2.png")
+local hotDog = display.newImage("comidas/s2.png")
 hotDog.alpha = 0
 hotDog:scale(.05,.05)
 
-local sorvete = display.newImage("comidas/m3.png")
+local sorvete = display.newImage("comidas/s3.png")
 sorvete.alpha = 0
 sorvete:scale(.1,.1)
 
-local bolo = display.newImage("comidas/m5.png")
+local bolo = display.newImage("comidas/s5.png")
 bolo.alpha = 0
 bolo:scale(.02,.02)
 
 function scene:createScene(event)
 			local scenegroup = self.view;
 			scene.view:insert(background);
-			scene.view:insert(gameOver);
+			scene.view:insert(voceVenceu);
 			scene.view:insert(menu);
 			scene.view:insert(playButton);
 				alimentos:insert( cerveja )
@@ -62,7 +63,7 @@ pontuacao = 150
 composer.gotoScene("menu")
 display.remove(menu)
 display.remove(background)
-display.remove(gameOver)
+display.remove(voceVenceu)
 display.remove(playButton)
 display.remove(sorvete)
 display.remove(bolo)
@@ -75,7 +76,7 @@ pontuacao = 150
 composer.gotoScene("game")
 display.remove(menu)
 display.remove(background)
-display.remove(gameOver)
+display.remove(voceVenceu)
 display.remove(playButton)
 display.remove(sorvete)
 display.remove(bolo)
@@ -99,9 +100,6 @@ end
 function scene:show( event )
     local sceneGroup = self.view
 	local phase = event.phase
-	local eat = audio.loadSound('sons/sgameo.wav');
-	local gameOver = audio.loadSound('sons/sgameo.wav');
-	audio.play(eat)
 	composer.removeScene("game")
 	if (phase == "will") then		
 	elseif (phase == "did") then
@@ -121,6 +119,7 @@ function scene:hide( event )
 	transition.cancel(menu)
 	transition.cancel(playButton)
 	playButton:removeEventListener( "tap", irParaGame )
+	menu:removeEventListener( "tap", irParaMenu )
 	end
 end
 

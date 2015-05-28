@@ -43,7 +43,8 @@ function scene:show( event )
 	audio.fadeOut( { channel=1, time=5000 } )
 	audio.play(somMenu, {channel = 1})
 	composer.removeScene("about")
-	composer.removeScene("gameOver")		
+	composer.removeScene("gameOver")
+	composer.removeScene("venceu")	
 	local phase = event.phase
 	if (phase == "did") then
 		playButton:addEventListener( "tap", startGame )

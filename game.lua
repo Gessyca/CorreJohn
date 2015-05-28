@@ -130,6 +130,7 @@ function scene:create( event )
     local sceneGroup = self.view
 	composer.removeScene("menu")
 	composer.removeScene("gameOver")
+	composer.removeScene("venceu")
 	playerGroup = display.newGroup()
 	scene.view:insert(background)
 	scene.view:insert(background2)
@@ -275,14 +276,17 @@ end
 
 function compararPontuacaoMeta()
 if(pontuacao == 50)then
--- Ganhou!!!
+audio.stop()
+display.remove(player)
+composer.gotoScene("venceu")
 end
-if(pontuacao == 151) then
+if(pontuacao == 200) then
 audio.stop()
 display.remove(player)
 composer.gotoScene("gameOver")
 end
 end
+
 
 function moverMenu(event)
 				transition.to ( menu, {time = 1000, alpha=1 ,xScale=0.12 , yScale=0.12, onComplete =moveNomeMenu} )
